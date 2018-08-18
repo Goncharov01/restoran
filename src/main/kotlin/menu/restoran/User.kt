@@ -23,17 +23,17 @@ class User(
   @Column(name = "last_name")
   var lastName: String? = null,
 
-//  @ManyToMany(fetch = FetchType.EAGER)
-//  @JoinTable(
-//    name = "user_role",
-//    joinColumns = [JoinColumn(name = "user_id", referencedColumnName = "id")],
-//    inverseJoinColumns = [JoinColumn(name = "role_id", referencedColumnName = "id")]
-//  )
-//  var roles: Collection<Role>? = null,
+  @ManyToMany(fetch = FetchType.EAGER)
+  @JoinTable(
+    name = "user_role",
+    joinColumns = [JoinColumn(name = "user_id", referencedColumnName = "id")],
+    inverseJoinColumns = [JoinColumn(name = "role_id", referencedColumnName = "id")]
+  )
+  var roles: Collection<Role>? = null,
   @OneToMany(mappedBy = "user")
   var restaurants:List<Restaurant>? = null
 
-//@JoinColumn (name="company")
+
 
 
 
@@ -49,6 +49,7 @@ class User(
     if (password != other.password) return false
     if (firstName != other.firstName) return false
     if (lastName != other.lastName) return false
+    if (roles != other.roles) return false
     if (restaurants != other.restaurants) return false
 
     return true
@@ -60,12 +61,12 @@ class User(
     result = 31 * result + (password?.hashCode() ?: 0)
     result = 31 * result + (firstName?.hashCode() ?: 0)
     result = 31 * result + (lastName?.hashCode() ?: 0)
+    result = 31 * result + (roles?.hashCode() ?: 0)
     result = 31 * result + (restaurants?.hashCode() ?: 0)
     return result
   }
 
   override fun toString(): String {
-    return "User(id=$id, username=$username, password=$password, firstName=$firstName, lastName=$lastName, restaurants=$restaurants)"
+    return "User(id=$id, username=$username, password=$password, firstName=$firstName, lastName=$lastName, roles=$roles, restaurants=$restaurants)"
   }
 }
-
